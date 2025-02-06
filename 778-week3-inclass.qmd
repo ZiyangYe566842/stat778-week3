@@ -1,0 +1,82 @@
+---
+title: inclass-week2
+author: Ziyang Ye
+format:
+    html:
+        code-fold: true
+        embed-resources: true
+        self-contained: true
+        theme:
+            light: [cosmo, theme.scss]
+            dark: [cosmo, theme-dark.scss]
+        toc: true
+---
+
+### Activity 1
+
+```{r}
+random_permute <- function(n) {
+  order(runif(n))
+}
+random_permute(1000)
+```
+
+mean(x):Time Complexity: O(n)
+Memory Complexity: O(1)
+
+numeric(n):Time Complexity: O(n)
+Memory Complexity: O(n)
+
+sd(x):Time Complexity: O(n)
+Memory Complexity: O(1)
+
+sort(x)
+
+Time Complexity: O(n) 
+
+Memory Complexity:Output space: O(n) 
+
+
+function in activity 1:
+
+Time Complexity: O(n) 
+
+Memory Complexity:Output space: O(n) 
+```{r}
+cherry_data <- read.csv("cherry-bloom-early.csv", header = TRUE, stringsAsFactors = FALSE)
+print(names(cherry_data))
+kendall_result <- cor.test(cherry_data$avg_tmax_Jan, cherry_data$avg_tmax_Feb, method = "kendall")
+print(kendall_result)
+
+```
+
+```{r}
+
+n <- nrow(cherry_data)
+
+random_permute <- function(n) {
+  order(runif(n))
+}
+tau_values <- numeric(1000)
+set.seed(123)
+for (i in 1:1000) {
+
+  permuted_index <- random_permute(n)
+  scrambled_feb <- cherry_data$avg_tmax_Feb[permuted_index]
+  tau_values[i] <- cor(cherry_data$avg_tmax_Jan, scrambled_feb, method = "kendall")
+}
+summary(tau_values)
+hist(tau_values,
+     main = "Histogram of Kendall's tau (Scrambled February Temperatures)",
+     xlab = "Kendall's tau")
+
+```
+```{r}
+
+contingency_table <- table(cherry_data$location, cherry_data$early_bloom)
+print(contingency_table)
+chi_result <- chisq.test(contingency_table)
+print(chi_result)
+
+```
+
